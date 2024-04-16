@@ -1,11 +1,9 @@
-import _arrayReduce from './internal/_arrayReduce.js';
 import _curry2 from './internal/_curry2.js';
 import _dispatchable from './internal/_dispatchable.js';
-import _filter from './internal/_filter.js';
+import _filter from './discrete/uncurried/_filter.js';
+import _filterO from './discrete/uncurried/_filterO.js';
 import _isObject from './internal/_isObject.js';
-import _xfilter from './internal/_xfilter.js';
-import keys from './keys.js';
-
+import _xFilter from './discrete/uncurried/_xFilter.js';
 
 /**
  * Takes a predicate and a `Filterable`, and returns a new filterable of the
@@ -35,17 +33,9 @@ import keys from './keys.js';
  *
  *      R.filter(isEven, {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, d: 4}
  */
-var filter = _curry2(_dispatchable(['fantasy-land/filter', 'filter'], _xfilter, function(pred, filterable) {
-  return (
-    _isObject(filterable) ?
-      _arrayReduce(function(acc, key) {
-        if (pred(filterable[key])) {
-          acc[key] = filterable[key];
-        }
-        return acc;
-      }, {}, keys(filterable)) :
-    // else
-      _filter(pred, filterable)
-  );
+var filter = _curry2(_dispatchable(['fantasy-land/filter', 'filter'], _xFilter, function(pred, filterable) {
+  return _isObject(filterable)
+    ? _filterO(pred, filterable)
+    : _filter(pred, filterable);
 }));
 export default filter;
